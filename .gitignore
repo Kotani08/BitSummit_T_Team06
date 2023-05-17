@@ -1,0 +1,17 @@
+Library/
+Logs/
+obj/
+.idea/
+*.csproj
+*.sln
+Temp/
+.vscode/
+.vs/
+UserSettings/EditorUserSettings.asset
+.DS_Store/
+Assets/.DS_Store
+Assets/Resurces/.DS_Store
+.DS_Store
+UserSettings/Layouts/CurrentMaximizeLayout.dwlt
+UserSettings/Layouts/default-2021.dwlt
+MonsterMaker/MonsterMaker/UserSettings/*
