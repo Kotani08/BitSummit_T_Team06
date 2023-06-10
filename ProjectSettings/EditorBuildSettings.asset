@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Member/Kotani/Scenes/MainGameScene.unity
+    guid: 0dfb652c48e074348a6ea7eb7f94a039
+  - enabled: 1
+    path: Assets/Member/Kotani/Scenes/TitleScene.unity
+    guid: 80dd606ca4fbcd64eb92bdd188405d21
+  - enabled: 1
+    path: Assets/Member/Kotani/Scenes/StageSelectScene.unity
+    guid: c452e2fdfa9197d45a4654dc4b2f25e3
   m_configObjects: {}
