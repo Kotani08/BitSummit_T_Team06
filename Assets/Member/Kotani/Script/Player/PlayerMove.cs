@@ -8,17 +8,26 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private Camera cam;
     [SerializeField]
-    private float speed = 10.0f;
+    private float moveSpeed = 10.0f;
     [SerializeField]
     private Rigidbody rb;
     private Animator animator;
     [SerializeField]
     private List<GameObject> playerWeapons = new List<GameObject>();
+
+    public List<GameObject> PlayerWeapons => playerWeapons;
+
+    public float MoveSpeed => moveSpeed;
+
+    public float moveForceMultiplier;    // 移動速度の入力に対する追従度
+
+    private PlayerWeapons playerWeapon;
     
     void Start() 
     {
+        playerWeapon = transform.GetComponent<PlayerWeapons>();
         rb = GetComponent<Rigidbody>();
-        animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
+        animator = transform.GetComponent<Animator>();
     }
     
     void Update(){
@@ -52,15 +61,12 @@ public class PlayerMove : MonoBehaviour
 
         if (Gamepad.current.buttonWest.wasPressedThisFrame)
         {
-           //Debug.Log("Button Northが押された！");
-           playerWeapons[0].SetActive (true);
-           //speed = speed/2;
+           PlayerWeaponsPressedAction();
         }
         if (Gamepad.current.buttonWest.wasReleasedThisFrame)
         {
            //Debug.Log("Button Southが離された！");
-           playerWeapons[0].SetActive (false);
-           //speed = speed*2;
+           PlayerWeaponsReleasedAction();
         }
     }
     #endregion
@@ -73,17 +79,27 @@ public class PlayerMove : MonoBehaviour
         float z = Input.GetAxis("Vertical");
         if (!Input.anyKey)
         {
-            if(rb.velocity != Vector3.zero){rb.velocity = Vector3.zero;}
+            //if(rb.velocity != Vector3.zero){rb.velocity = Vector3.zero;}
             animator.SetFloat("Speed",0f);
         }
         else{MoveBase(x,z);}
-        //if(Input.GetKeyDown())
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            //Debug.Log("左クリック");
+            PlayerWeaponsPressedAction();
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            //Debug.Log("左クリック上がった");
+            PlayerWeaponsReleasedAction();
+        }
     }
     #endregion
 
     #region プレイヤーキャラクターを動かす処理
 
-    //上下移動の制限mん
+    //上下移動の制限
     private void MoveBase(float x,float z)
     {
         //BlendTree用のアニメーションSpeed管理
@@ -114,15 +130,9 @@ public class PlayerMove : MonoBehaviour
 
         //可変用にclassに切り分ける
 
-        // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
-            rb.velocity = moveForward * speed + new Vector3(0,3f, 0);
+        Vector3 moveVector = moveSpeed * (moveForward);
 
-        if(rb.velocity != Vector3.zero){
-            rb.velocity = Vector3.zero;
-            rb.velocity = moveForward * speed + new Vector3(0, rb.velocity.y, 0);
-        }
-
-        // /rb.velocity = Vector3.zero;
+        rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
  
         // キャラクターの向きを進行方向に
         if (moveForward != Vector3.zero) {
@@ -130,4 +140,48 @@ public class PlayerMove : MonoBehaviour
         }
     }
     #endregion
+
+    void PlayerWeaponsPressedAction()
+    {
+        switch(playerWeapon.WeaponsNumber)
+        {
+            case 0:
+            moveSpeed = moveSpeed/1.5f;
+            playerWeapons[0].SetActive (true);
+            break;
+            case 1:
+            playerWeapons[1].SetActive (true);
+            break;
+            case 2:
+            playerWeapons[0].SetActive (true);
+            break;
+            case 3:
+            playerWeapons[1].SetActive (true);
+            break;
+            default:
+            break;
+        }
+    }
+
+    void PlayerWeaponsReleasedAction()
+    {
+        switch(playerWeapon.WeaponsNumber)
+        {
+            case 0:
+            moveSpeed = moveSpeed*1.5f;
+            playerWeapons[0].SetActive (false);
+            break;
+            case 1:
+            //playerWeapons[1].SetActive (false);
+            //moveSpeed = moveSpeed/3;
+            break;
+            case 2:
+            playerWeapons[0].SetActive (false);
+            break;
+            case 3:
+            break;
+            default:
+            break;
+        }
+    }
 }

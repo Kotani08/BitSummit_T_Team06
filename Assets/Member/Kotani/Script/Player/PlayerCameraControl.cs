@@ -36,11 +36,9 @@ public class PlayerCameraControl : MonoBehaviour
         else if(Gamepad.current == null)
         {
             //マウスの方向でカメラ方向を決める
-            //回転させる角度
-            //float x = Gamepad.current.rightStick.ReadValue().x/10;
-            //Cameraを引く動き
-            //float y = Gamepad.current.rightStick.ReadValue().y/10;
-            //CameraMoveCore(x,y);
+            float moveX = Input.GetAxis("Mouse X") *lookNum;
+            float moveY = Input.GetAxis("Mouse Y") *lookNum;
+            CameraMoveCore(moveX,moveY);
         }
         //カメラの角度調整時もキャラクターを生面に表示するやつ
         //playerMove.CameraLookAt();
