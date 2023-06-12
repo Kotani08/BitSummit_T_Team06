@@ -113,7 +113,7 @@ public enum SEName
 {
 	TaskSuccesses,
 	CommandFailure,
-	TurnChange,
+	SharkBite,
 }
 
 public enum BGMName

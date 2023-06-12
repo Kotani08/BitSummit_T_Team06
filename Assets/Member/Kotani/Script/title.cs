@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class title : MonoBehaviour
 {
@@ -15,7 +16,10 @@ public class title : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0)){LoadSceneFlag = true;}
-        
+        if (Gamepad.current != null){
+            //if(Gamepad.current.AnyKey()){LoadSceneFlag = true;}
+        }
+
     }
 
     IEnumerator LoadSceneAndWait()
